@@ -11,3 +11,9 @@ export class InvalidIdError extends DomainError {
     super(`The id ${id} is invalid.`);
   }
 }
+
+export class UserEmailAlreadyExistsError extends DomainError {
+  constructor(email: string) {
+    super(`The email ${email} already exists.`);
+  }
+}
