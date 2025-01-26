@@ -13,10 +13,11 @@ export class CreateUserUseCase implements UseCase {
     private readonly userService: UserService,
   ) {}
 
-  async execute(email: string): Promise<void> {
+  async execute(email: string): Promise<User> {
     const user = new User({ email });
     await this.userService.checkIfUserExists(user.email);
 
     await this.userRepository.create(user);
+    return user;
   }
 }

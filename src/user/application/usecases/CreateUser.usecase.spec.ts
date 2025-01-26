@@ -7,6 +7,7 @@ import {
   UserEmailAlreadyExistsError,
 } from '../../domain/errors/errors';
 import { User } from '../../domain/entities/user.entity';
+import e from 'express';
 
 describe('CreateUserUseCase', () => {
   let createUserUseCase: CreateUserUseCase;
@@ -64,10 +65,14 @@ describe('CreateUserUseCase', () => {
     jest.spyOn(userRepository, 'findByEmail').mockResolvedValueOnce(null);
 
     // Act
-    await createUserUseCase.execute(email);
+    const newUser = await createUserUseCase.execute(email);
 
     // Assert
     expect(userRepository.findByEmail).toHaveBeenCalledTimes(1);
     expect(userRepository.create).toHaveBeenCalledTimes(1);
+
+    expect(newUser.id).toBeDefined();
+    expect(newUser.email).toEqual(email);
+    expect(newUser.consents).toEqual([]);
   });
 });
