@@ -3,6 +3,7 @@ import { UseCase } from '../../../core/shared/helpers/usecase';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { User } from '../../domain/entities/user.entity';
 import { UserNotFoundError } from '../../domain/errors/errors';
+import { validate } from 'uuid';
 
 @Injectable()
 export class GetUserUseCase implements UseCase {
@@ -12,6 +13,9 @@ export class GetUserUseCase implements UseCase {
   ) {}
 
   async execute(id: string): Promise<User> {
+    if (!validate(id)) {
+      throw new UserNotFoundError(id);
+    }
     const user = await this.userRepository.findById(id);
 
     if (!user) {

@@ -3,6 +3,7 @@ import { UserRepository } from '../../domain/repositories/user.repository';
 import { UserNotFoundError } from '../../domain/errors/errors';
 import { User } from '../../domain/entities/user.entity';
 import { GetUserUseCase } from './GetUser.usecase';
+import { v4 as uuidv4 } from 'uuid';
 
 describe('GetUserUseCase', () => {
   let getUserUseCase: GetUserUseCase;
@@ -27,7 +28,7 @@ describe('GetUserUseCase', () => {
 
   it('should get a user', async () => {
     // Arrange
-    const validId = 'valid-id';
+    const validId = uuidv4();
     const validEmail = 'valid@email.com';
     jest
       .spyOn(userRepository, 'findById')
@@ -49,7 +50,7 @@ describe('GetUserUseCase', () => {
 
   it('should throw an error when user is not found', async () => {
     // Arrange
-    const invalidId = 'invalid-id';
+    const invalidId = uuidv4();
     jest.spyOn(userRepository, 'findById').mockResolvedValueOnce(null);
 
     // Act & Assert
@@ -57,5 +58,17 @@ describe('GetUserUseCase', () => {
       UserNotFoundError,
     );
     expect(userRepository.findById).toHaveBeenCalledTimes(1);
+  });
+
+  it('should throw an error when querying a user with invalid id', async () => {
+    // Arrange
+    const invalidId = 'invalid-id';
+    jest.spyOn(userRepository, 'findById').mockResolvedValueOnce(null);
+
+    // Act & Assert
+    await expect(getUserUseCase.execute(invalidId)).rejects.toThrow(
+      UserNotFoundError,
+    );
+    expect(userRepository.findById).toHaveBeenCalledTimes(0);
   });
 });

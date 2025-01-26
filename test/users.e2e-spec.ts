@@ -8,6 +8,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserTypeOrmEntity } from '../src/user/infra/database/typeorm/entities/user.entity';
 import { CreateUserRequest } from '../src/user/infra/presentation/http/dto/create-user';
 import { connectionSource } from '../ormconfig-test';
+import { GetUserRequest } from '../src/user/infra/presentation/http/dto/get-user';
+import { v4 as uuidv4 } from 'uuid';
 
 describe('users', () => {
   let app: INestApplication<App>;
@@ -85,5 +87,83 @@ describe('users', () => {
       .post('/users')
       .send(validUserBody)
       .expect(422);
+  });
+
+  it('should be able to get a user', async () => {
+    const validUserBody: CreateUserRequest = {
+      email: 'valid@email.com',
+    };
+
+    const response = await request(app.getHttpServer())
+      .post('/users')
+      .send(validUserBody)
+      .expect(201);
+
+    const getUserBody: GetUserRequest = {
+      id: (response.body as { id: string }).id,
+    };
+
+    return request(app.getHttpServer())
+      .get(`/users/${getUserBody.id}`)
+      .expect(200);
+  });
+
+  it('should not be able to get a user with invalid id', () => {
+    const invalidUserBody: GetUserRequest = {
+      id: 'invalid-id',
+    };
+
+    return request(app.getHttpServer())
+      .get(`/users/${invalidUserBody.id}`)
+      .expect(404);
+  });
+
+  it('should not be able to get a user that does not exist', () => {
+    const invalidUserBody: GetUserRequest = {
+      id: uuidv4(),
+    };
+
+    return request(app.getHttpServer())
+      .get(`/users/${invalidUserBody.id}`)
+      .expect(404);
+  });
+
+  it('should be able to delete a user', async () => {
+    const validUserBody: CreateUserRequest = {
+      email: 'valid@email.com',
+    };
+
+    const response = await request(app.getHttpServer())
+      .post('/users')
+      .send(validUserBody)
+      .expect(201);
+
+    const deleteUserBody: GetUserRequest = {
+      id: (response.body as { id: string }).id,
+    };
+
+    return request(app.getHttpServer())
+      .delete(`/users/${deleteUserBody.id}`)
+      .expect(200);
+  });
+
+  it('should not be able to delete a user with invalid id', () => {
+    const invalidUserBody: GetUserRequest = {
+      id: 'invalid-id',
+    };
+
+    return request(app.getHttpServer())
+      .delete(`/users/${invalidUserBody.id}`)
+      .expect(200);
+  });
+
+  it('should not be able to delete a user that does not exist', () => {
+    const invalidUserBody: GetUserRequest = {
+      id: uuidv4(),
+    };
+
+    return request(app.getHttpServer())
+      .delete(`/users/${invalidUserBody.id}`)
+      .expect(200);
   });
 });

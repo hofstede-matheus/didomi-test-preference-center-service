@@ -9,6 +9,7 @@ import {
   InvalidIdError,
   InvalidUserEmailError,
   UserEmailAlreadyExistsError,
+  UserNotFoundError,
 } from '../../../../domain/errors/errors';
 import { Response } from 'express';
 
@@ -51,6 +52,9 @@ export class DomainErrorToHttpExceptionFilter implements ExceptionFilter {
 
       case UserEmailAlreadyExistsError:
         return new HttpException({ message: exception.message }, 422);
+
+      case UserNotFoundError:
+        return new HttpException({ message: exception.message }, 404);
 
       default:
         return new HttpException({ message: 'Internal server error' }, 500);

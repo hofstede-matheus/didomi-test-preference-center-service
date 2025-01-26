@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { DeleteUserUseCase } from './DeleteUser.usecase';
+import { v4 as uuidv4 } from 'uuid';
 
 describe('GetUserUseCase', () => {
   let deleteUserUseCase: DeleteUserUseCase;
@@ -25,7 +26,7 @@ describe('GetUserUseCase', () => {
 
   it('should delete a user', async () => {
     // Arrange
-    const validId = 'valid-id';
+    const validId = uuidv4();
     jest.spyOn(userRepository, 'delete').mockResolvedValueOnce();
 
     // Act
@@ -33,5 +34,17 @@ describe('GetUserUseCase', () => {
 
     // Assert
     expect(userRepository.delete).toHaveBeenCalledTimes(1);
+  });
+
+  it('should delete a user with an invalid, but not call repository', async () => {
+    // Arrange
+    const validId = 'valid-id';
+    jest.spyOn(userRepository, 'delete').mockResolvedValueOnce();
+
+    // Act
+    await deleteUserUseCase.execute(validId);
+
+    // Assert
+    expect(userRepository.delete).toHaveBeenCalledTimes(0);
   });
 });

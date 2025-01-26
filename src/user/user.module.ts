@@ -6,12 +6,16 @@ import { CreateUserUseCase } from './application/usecases/CreateUser.usecase';
 import { UserRepository } from './domain/repositories/user.repository';
 import { TypeOrmUsersRepository } from './infra/database/typeorm/repositories/TypeOrmUsersRepository';
 import { UserService } from './domain/services/user.service';
+import { GetUserUseCase } from './application/usecases/GetUser.usecase';
+import { DeleteUserUseCase } from './application/usecases/DeleteUser.usecase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserTypeOrmEntity])],
   controllers: [UserController],
   providers: [
     CreateUserUseCase,
+    GetUserUseCase,
+    DeleteUserUseCase,
     UserService,
     {
       provide: UserRepository,

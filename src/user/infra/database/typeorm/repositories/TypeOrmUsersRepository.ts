@@ -19,4 +19,16 @@ export class TypeOrmUsersRepository implements UserRepository {
     const user = await this.shiftsRepository.findOneBy({ email });
     return user ? new User(user) : null;
   }
+
+  async findById(id: string): Promise<User | null> {
+    const user = await this.shiftsRepository.findOne({
+      where: { id },
+    });
+    return user ? new User(user) : null;
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.shiftsRepository.delete(id);
+    return;
+  }
 }
