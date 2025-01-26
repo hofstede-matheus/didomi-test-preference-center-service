@@ -7,7 +7,6 @@ import {
   UserEmailAlreadyExistsError,
 } from '../../domain/errors/errors';
 import { User } from '../../domain/entities/user.entity';
-import e from 'express';
 
 describe('CreateUserUseCase', () => {
   let createUserUseCase: CreateUserUseCase;

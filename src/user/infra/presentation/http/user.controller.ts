@@ -8,7 +8,6 @@ export class UserController {
 
   @Post()
   async create(@Body() body: CreateUserRequest): Promise<CreateUserResponse> {
-    const user = await this.createUserUseCase.execute(body.email);
-    return user;
+    return this.createUserUseCase.execute(body.email);
   }
 }
