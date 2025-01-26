@@ -1,5 +1,5 @@
 export class DomainError extends Error {
-  constructor() {
-    super();
+  constructor(message: string) {
+    super(message);
   }
 }

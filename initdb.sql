@@ -1,0 +1,1 @@
+create database didomi_test;
