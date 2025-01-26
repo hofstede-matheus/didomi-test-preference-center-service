@@ -7,5 +7,10 @@ export default registerAs('postgres', () => ({
   username: env.POSTGRES_USER,
   password: env.POSTGRES_PASSWORD,
   database: env.POSTGRES_DB,
-  logging: env.POSTGRES_LOGGING || false,
+
+  synchronize: false,
+  logging: process.env.DATABASE_LOGGING === 'true',
+  migrationsRun: true,
+  migrations: ['dist/src/core/database/typeorm/migrations/*.js'],
+  entities: ['dist/src/**/infra/database/typeorm/entities/*.entity.js'],
 }));
