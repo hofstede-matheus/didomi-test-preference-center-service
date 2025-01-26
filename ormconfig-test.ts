@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: '.env.test' });
 
 export const connectionSource = new DataSource({
   type: 'postgres',
