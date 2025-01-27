@@ -17,6 +17,17 @@ export class TypeOrmUsersRepository implements UserRepository {
   }
 
   async findByEmail(email: string): Promise<User | null> {
+    /**
+     * SQL Query to get user and merge with the last email_notifications and sms_notifications.
+     *
+     * @param email - The email of the user to retrieve information for.
+     * @returns An array of objects, each containing:
+     * - `id`: The user's ID.
+     * - `email`: The user's email.
+     * - `consents`: An array of consent objects, each containing:
+     *   - `consent_id`: The ID of the consent.
+     *   - `enabled`: A boolean indicating whether the consent is enabled.
+     */
     const queryResults: {
       id: string;
       email: string;
@@ -76,6 +87,17 @@ export class TypeOrmUsersRepository implements UserRepository {
   }
 
   async findById(id: string): Promise<User | null> {
+    /**
+     * SQL Query to get user and merge with the last email_notifications and sms_notifications.
+     *
+     * @param id - The id of the user to retrieve information for.
+     * @returns An array of objects, each containing:
+     * - `id`: The user's ID.
+     * - `email`: The user's email.
+     * - `consents`: An array of consent objects, each containing:
+     *   - `consent_id`: The ID of the consent.
+     *   - `enabled`: A boolean indicating whether the consent is enabled.
+     */
     const queryResults: {
       id: string;
       email: string;
