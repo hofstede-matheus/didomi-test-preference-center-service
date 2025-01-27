@@ -1,16 +1,19 @@
-import { Column, CreateDateColumn, Entity } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('users-consents')
 export class UserConsentTypeOrmEntity {
-  @Column()
+  @PrimaryColumn()
   id: string;
+
+  @Column({ name: 'consent_id' })
+  consentId: string;
 
   @Column()
   enabled: boolean;
 
-  @Column()
+  @Column({ name: 'user_id' })
   userId: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 }

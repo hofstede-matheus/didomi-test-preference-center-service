@@ -12,9 +12,10 @@ export class TypeOrmUserConsentRepository implements UserConsentRepository {
 
   async create(userId: string, consent: UserConsent): Promise<void> {
     const userConsentEntity = this.userConsentRepository.create({
-      userId,
       id: consent.id,
+      consentId: consent.consentId,
       enabled: consent.enabled,
+      userId,
     });
     await this.userConsentRepository.save(userConsentEntity);
     return;

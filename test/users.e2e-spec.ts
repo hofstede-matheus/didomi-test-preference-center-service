@@ -10,6 +10,7 @@ import { CreateUserRequest } from '../src/user/infra/presentation/http/dto/creat
 import { connectionSource } from '../ormconfig-test';
 import { GetUserRequest } from '../src/user/infra/presentation/http/dto/get-user';
 import { v4 as uuidv4 } from 'uuid';
+import { TEST_METADATA } from './helpers';
 
 describe('users', () => {
   let app: INestApplication<App>;
@@ -17,26 +18,8 @@ describe('users', () => {
   beforeAll(async () => {
     await connectionSource.initialize();
 
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [
-        ConfigModule.forRoot({
-          envFilePath: '.env.test',
-        }),
-        TypeOrmModule.forRoot({
-          type: 'postgres',
-          host: process.env.POSTGRES_HOST,
-          port: parseInt(process.env.DATABASE_PORT ?? '5432', 10),
-          username: process.env.POSTGRES_USER,
-          password: process.env.POSTGRES_PASSWORD,
-          database: process.env.POSTGRES_DB,
-          migrations: ['src/core/database/typeorm/migrations/*.ts'],
-          migrationsRun: true,
-          entities: [UserTypeOrmEntity],
-          logging: process.env.DATABASE_LOGGING === 'true',
-        }),
-        UserModule,
-      ],
-    }).compile();
+    const moduleFixture: TestingModule =
+      await Test.createTestingModule(TEST_METADATA).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();

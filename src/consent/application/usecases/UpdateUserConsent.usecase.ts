@@ -7,12 +7,13 @@ import {
   ConsentId,
   UserConsent,
 } from '../../domain/entities/user-consent.entity';
+import { validate } from 'uuid';
 
 interface UpdateUserConsentUseCaseInput {
   user: {
     id: string;
   };
-  consent: {
+  consents: {
     id: string;
     enabled: boolean;
   }[];
@@ -28,18 +29,22 @@ export class UpdateUserConsentUseCase implements UseCase {
   ) {}
 
   async execute(input: UpdateUserConsentUseCaseInput): Promise<void> {
+    if (!validate(input.user.id)) {
+      throw new UserNotFoundError(input.user.id);
+    }
+
     const user = await this.userRepository.findById(input.user.id);
 
     if (!user) {
       throw new UserNotFoundError(input.user.id);
     }
 
-    const arrayOfConsentsToBeUpdated: UserConsent[] = input.consent.map(
+    const arrayOfConsentsToBeUpdated: UserConsent[] = input.consents.map(
       (consent) =>
         new UserConsent({
-          userId: user.id,
-          id: consent.id as ConsentId,
+          consentId: consent.id as ConsentId,
           enabled: consent.enabled,
+          userId: user.id,
         }),
     );
 

@@ -48,7 +48,7 @@ describe('UpdateUserConsentUseCase', () => {
     await expect(
       updateUserConsentUseCase.execute({
         user: { id },
-        consent: [],
+        consents: [],
       }),
     ).rejects.toThrow(UserNotFoundError);
     expect(userRepository.findById).toHaveBeenCalledTimes(1);
@@ -59,7 +59,7 @@ describe('UpdateUserConsentUseCase', () => {
     // Arrange
     const id = uuidv4();
     const validEmail = 'valid@email.com';
-    const consent = [{ id: 'invalid-id', enabled: true }];
+    const consents = [{ id: 'invalid-id', enabled: true }];
     jest
       .spyOn(userRepository, 'findById')
       .mockResolvedValueOnce(new User({ email: validEmail }));
@@ -68,7 +68,7 @@ describe('UpdateUserConsentUseCase', () => {
     await expect(
       updateUserConsentUseCase.execute({
         user: { id },
-        consent,
+        consents,
       }),
     ).rejects.toThrow(InvalidUserConsentIdError);
     expect(userRepository.findById).toHaveBeenCalledTimes(1);
@@ -79,7 +79,7 @@ describe('UpdateUserConsentUseCase', () => {
     // Arrange
     const id = uuidv4();
     const validEmail = 'valid@email.com';
-    const consent = [{ id: 'email_notifications', enabled: true }];
+    const consents = [{ id: 'email_notifications', enabled: true }];
     jest
       .spyOn(userRepository, 'findById')
       .mockResolvedValueOnce(new User({ email: validEmail }));
@@ -87,7 +87,7 @@ describe('UpdateUserConsentUseCase', () => {
     // Act
     await updateUserConsentUseCase.execute({
       user: { id },
-      consent,
+      consents,
     });
 
     // Assert

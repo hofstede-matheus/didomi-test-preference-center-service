@@ -22,5 +22,6 @@ import { DeleteUserUseCase } from './application/usecases/DeleteUser.usecase';
       useClass: TypeOrmUsersRepository,
     },
   ],
+  exports: [{ provide: UserRepository, useClass: TypeOrmUsersRepository }],
 })
 export class UserModule {}
