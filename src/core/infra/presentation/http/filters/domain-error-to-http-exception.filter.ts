@@ -10,8 +10,9 @@ import {
   InvalidUserEmailError,
   UserEmailAlreadyExistsError,
   UserNotFoundError,
-} from '../../../../domain/errors/errors';
+} from '../../../../../user/domain/errors/errors';
 import { Response } from 'express';
+import { InvalidUserConsentIdError } from '../../../../../consent/domain/errors/errors';
 
 @Catch()
 export class DomainErrorToHttpExceptionFilter implements ExceptionFilter {
@@ -55,6 +56,9 @@ export class DomainErrorToHttpExceptionFilter implements ExceptionFilter {
 
       case UserNotFoundError:
         return new HttpException({ message: exception.message }, 404);
+
+      case InvalidUserConsentIdError:
+        return new HttpException({ message: exception.message }, 422);
 
       default:
         return new HttpException({ message: 'Internal server error' }, 500);

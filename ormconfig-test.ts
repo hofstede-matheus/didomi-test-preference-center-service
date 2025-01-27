@@ -13,6 +13,6 @@ export const connectionSource = new DataSource({
   synchronize: false,
   logging: process.env.DATABASE_LOGGING === 'true',
 
-  entities: ['src/core/database/typeorm/entities/*.ts'],
+  entities: ['src/**/infra/database/typeorm/entities/*.entity.ts'],
   migrations: ['src/core/database/typeorm/migrations/*.ts'],
 });
