@@ -67,9 +67,6 @@ consents
   ✓ should not be able to create a consent with an invalid user
   ✓ should not be able to create a consent with a user that does not exist
   ✓ should not be able to create a consent with an invalid consent
-
-
-
 ```
 
 ## API Docs
