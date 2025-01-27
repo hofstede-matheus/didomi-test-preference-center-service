@@ -51,7 +51,7 @@ describe('UpdateUserConsentUseCase', () => {
         consents: [],
       }),
     ).rejects.toThrow(UserNotFoundError);
-    expect(userRepository.findById).toHaveBeenCalledTimes(1);
+    expect(userRepository.findById).toHaveBeenCalledTimes(0);
     expect(userConsentRepository.create).toHaveBeenCalledTimes(0);
   });
 
