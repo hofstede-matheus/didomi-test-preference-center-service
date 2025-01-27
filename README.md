@@ -4,7 +4,6 @@
 
 ```bash
 cp .env.example .env
-cp .env.test.example .env.test
 
 npm ci
 
