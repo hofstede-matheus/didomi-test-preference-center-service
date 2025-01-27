@@ -17,3 +17,9 @@ export class UserEmailAlreadyExistsError extends DomainError {
     super(`The email ${email} already exists.`);
   }
 }
+
+export class UserNotFoundError extends DomainError {
+  constructor(id: string) {
+    super(`The user with id ${id} was not found.`);
+  }
+}

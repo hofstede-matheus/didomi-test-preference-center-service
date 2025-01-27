@@ -31,7 +31,7 @@ describe('CreateUserUseCase', () => {
     userRepository = module.get<UserRepository>(UserRepository);
   });
 
-  it('should not create an user with invalid email', async () => {
+  it('should not create a user with invalid email', async () => {
     // Arrange
     const email = 'invalid-email';
 
@@ -43,7 +43,7 @@ describe('CreateUserUseCase', () => {
     expect(userRepository.create).toHaveBeenCalledTimes(0);
   });
 
-  it('should not create an user with already existing email', async () => {
+  it('should not create a user with already existing email', async () => {
     // Arrange
     const email = 'valid@email.com';
     jest
@@ -58,7 +58,7 @@ describe('CreateUserUseCase', () => {
     expect(userRepository.create).toHaveBeenCalledTimes(0);
   });
 
-  it('should create an user', async () => {
+  it('should create a user', async () => {
     // Arrange
     const email = 'valid@email.com';
     jest.spyOn(userRepository, 'findByEmail').mockResolvedValueOnce(null);

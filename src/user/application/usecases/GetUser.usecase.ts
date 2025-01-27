@@ -1,22 +1,26 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { UseCase } from '../../../core/shared/helpers/usecase';
 import { UserRepository } from '../../domain/repositories/user.repository';
-import { UserService } from '../../domain/services/user.service';
 import { User } from '../../domain/entities/user.entity';
+import { UserNotFoundError } from '../../domain/errors/errors';
+import { validate } from 'uuid';
 
 @Injectable()
-export class CreateUserUseCase implements UseCase {
+export class GetUserUseCase implements UseCase {
   constructor(
     @Inject(UserRepository)
     private readonly userRepository: UserRepository,
-    private readonly userService: UserService,
   ) {}
 
-  async execute(email: string): Promise<User> {
-    const user = new User({ email });
-    await this.userService.checkIfUserExists(user.email);
+  async execute(id: string): Promise<User> {
+    if (!validate(id)) {
+      throw new UserNotFoundError(id);
+    }
+    const user = await this.userRepository.findById(id);
 
-    await this.userRepository.create(user);
+    if (!user) {
+      throw new UserNotFoundError(id);
+    }
     return user;
   }
 }
