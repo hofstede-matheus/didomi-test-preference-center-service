@@ -14,6 +14,7 @@ import { GetUserRequest, GetUserResponse } from './dto/get-user';
 import { GetUserUseCase } from '../../../application/usecases/GetUser.usecase';
 import { DeleteUserUseCase } from '../../../application/usecases/DeleteUser.usecase';
 import { DeleteUserRequest } from './dto/delete-user';
+import { ApiResponse } from '@nestjs/swagger';
 
 @UseFilters(DomainErrorToHttpExceptionFilter)
 @Controller('users')
@@ -25,6 +26,7 @@ export class UserController {
   ) {}
 
   @Post()
+  @ApiResponse({ status: 201, type: CreateUserResponse })
   async create(@Body() body: CreateUserRequest): Promise<CreateUserResponse> {
     const user = await this.createUserUseCase.execute(body.email);
 
@@ -41,6 +43,7 @@ export class UserController {
   }
 
   @Get(':id')
+  @ApiResponse({ status: 200, type: GetUserResponse })
   async get(@Param() params: GetUserRequest): Promise<GetUserResponse> {
     const user = await this.getUserUseCase.execute(params.id);
 
@@ -57,6 +60,7 @@ export class UserController {
   }
 
   @Delete(':id')
+  @ApiResponse({ status: 200 })
   async delete(@Param() params: DeleteUserRequest): Promise<void> {
     await this.deleteUserUseCase.execute(params.id);
   }

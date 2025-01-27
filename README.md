@@ -27,3 +27,13 @@ $ npm run test:e2e
 # test coverage (84% line coverage 💪)
 $ npm run test:cov
 ```
+
+## API Docs
+
+### Swagger Docs
+
+<http:localhost:3001/docs>
+
+### OpenAPI Spec
+
+<http://localhost:3001/docs-json>
