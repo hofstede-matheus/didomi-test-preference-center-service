@@ -24,6 +24,6 @@ $ npm run test:unit
 # integration tests
 $ npm run test:e2e
 
-# test coverage
+# test coverage (84% line coverage 💪)
 $ npm run test:cov
 ```

@@ -77,14 +77,13 @@
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
-    "collectCoverageFrom": [
-      "**/*.ts"
-    ],
     "coverageDirectory": "../coverage",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/test/",
-      "/dist/"
+    "collectCoverageFrom": [
+      "**/*.ts",
+      "!**/node_modules/**",
+      "!**/test/**",
+      "!**/dist/**",
+      "!ormconfig(-test)?\\.ts"
     ],
     "testEnvironment": "node"
   },
