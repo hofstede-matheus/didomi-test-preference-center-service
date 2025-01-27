@@ -2,7 +2,7 @@ import { EMAIL_VALIDATION_REGEX } from '../../../core/constants';
 import { InvalidIdError, InvalidUserEmailError } from '../errors/errors';
 import { v4 as uuidv4, validate } from 'uuid';
 
-export class User implements User {
+export class User {
   readonly #id: string;
   #email: string;
   #consents: [];
@@ -45,13 +45,13 @@ export class User implements User {
     this.#consents = consents;
   }
 
-  private validateEmail(email: string): void {
+  validateEmail(email: string): void {
     if (!EMAIL_VALIDATION_REGEX.test(email)) {
       throw new InvalidUserEmailError(email);
     }
   }
 
-  private validateId(id: string): void {
+  validateId(id: string): void {
     if (!validate(id)) {
       throw new InvalidIdError(id);
     }

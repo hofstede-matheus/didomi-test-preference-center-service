@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import databaseConfig from './config/postgres.config';
 import { UserModule } from '../user/user.module';
+import { ConsentModule } from '../consent/consent.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UserModule } from '../user/user.module';
       }),
     }),
     UserModule,
+    ConsentModule,
   ],
   controllers: [],
   providers: [],
