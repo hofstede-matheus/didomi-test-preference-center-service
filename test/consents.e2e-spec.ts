@@ -2,14 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { App } from 'supertest/types';
-import { UserModule } from '../src/user/user.module';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserTypeOrmEntity } from '../src/user/infra/database/typeorm/entities/user.entity';
 import { CreateUserRequest } from '../src/user/infra/presentation/http/dto/create-user';
 import { connectionSource } from '../ormconfig-test';
-import { ConsentModule } from '../src/consent/consent.module';
-import { UserConsentTypeOrmEntity } from '../src/consent/infra/database/typeorm/entities/user-consent.entity';
 import { CreateUserConsentEventRequest } from '../src/consent/infra/presentation/http/dto/create-event';
 import { TEST_METADATA } from './helpers';
 

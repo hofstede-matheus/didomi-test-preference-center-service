@@ -14,6 +14,8 @@ npm run start:dev
 
 ## Tests
 
+### Running the tests
+
 ```bash
 # all tests
 $ npm run test
@@ -28,6 +30,48 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+The approach of testing was unit tests the application layer, mocking repositories, and integration tests using a real database connection.
+
+```
+## unit tests
+
+UpdateUserConsentUseCase
+  ✓ should not create a consent with invalid user id
+  ✓ should not create a consent with invalid consent id
+  ✓ should create a consent
+
+CreateUserUseCase
+  ✓ should not create a user with invalid email
+  ✓ should not create a user with already existing email
+  ✓ should create a user
+
+DeleteUserUseCase
+  ✓ should delete a user
+  ✓ should delete a user with an invalid, but not call repository
+
+## integration tests
+
+users
+  ✓ should be able to create a user with valid email
+  ✓ should not be able to create a user with invalid email
+  ✓ should not be able to create a user with an already registered email
+  ✓ should be able to get a user
+  ✓ should not be able to get a user with invalid id
+  ✓ should not be able to get a user that does not exist
+  ✓ should be able to delete a user
+  ✓ should not be able to delete a user with invalid id
+  ✓ should not be able to delete a user that does not exist
+
+consents
+  ✓ should be able to create a consent
+  ✓ should not be able to create a consent with an invalid user
+  ✓ should not be able to create a consent with a user that does not exist
+  ✓ should not be able to create a consent with an invalid consent
+
+
+
+```
+
 ## API Docs
 
 ### Swagger Docs
@@ -40,7 +84,7 @@ $ npm run test:cov
 
 ## Architecture & Design
 
-### Architecture
+### System Context Diagram
 
 ```mermaid
 
@@ -107,15 +151,24 @@ Rel(CreateUserUseCase, UserService, "Uses")
 Rel(CreateUserUseCase, UserRepository, "Uses")
 Rel(CreateUserUseCase, UserEntity, "Uses")
 
+Rel(DeleteUserUseCase, UserRepository, "Uses")
+
+Rel(GetUserUseCase, UserRepository, "Uses")
+Rel(GetUserUseCase, UserEntity, "Uses")
+
+Rel(UpdateUserConsentUseCase, UserConsentRepository, "Uses")
+Rel(UpdateUserConsentUseCase, UserRepository, "Uses")
+Rel(UpdateUserConsentUseCase, UserConsentEntity, "Uses")
+
 Rel(TypeOrmUsersRepository, UserRepository, "Implements")
 Rel(TypeOrmUserConsentRepository, UserConsentRepository, "Implements")
+
 Rel(TypeOrmUsersRepository, db, "Reads/Writes", "SQL")
 Rel(TypeOrmUserConsentRepository, db, "Reads/Writes", "SQL")
 
 
 UpdateLayoutConfig($c4ShapeInRow="1", $c4BoundaryInRow="2")
-UpdateElementStyle(user, $offsetY="10")
-UpdateRelStyle(user, controllers, $offsetX="5")
+
 
 ```
 
@@ -131,10 +184,34 @@ This Nest.js application is modular monolith with a clean architecture layered a
 
 Each module is divided in the layers above.
 
-## Modules
+### Modules
 
 - **User Module**: Contains the user agregate root, and every functionality related to user.
 
 - **Consent Module**: Contains the consent agregate root, and every functionality related to the consent actor.
 
 - **Core Module**: Contains the shared logic of the application, like the error handling, the validation pipe, and the configuration service.
+
+### Database
+
+- PostgreSQL 17.2
+
+#### Database Schema
+
+```mermaid
+
+erDiagram
+    users {
+        uuid id PK
+        text email
+    }
+    users_consents {
+        uuid id PK
+        text consent_id
+        boolean enabled
+        uuid user_id FK
+        timestamp created_at
+    }
+
+    users ||--o{ users_consents : has
+```

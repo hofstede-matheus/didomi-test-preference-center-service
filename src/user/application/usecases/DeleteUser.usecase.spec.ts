@@ -3,7 +3,7 @@ import { UserRepository } from '../../domain/repositories/user.repository';
 import { DeleteUserUseCase } from './DeleteUser.usecase';
 import { v4 as uuidv4 } from 'uuid';
 
-describe('GetUserUseCase', () => {
+describe('DeleteUserUseCase', () => {
   let deleteUserUseCase: DeleteUserUseCase;
   let userRepository: UserRepository;
 
